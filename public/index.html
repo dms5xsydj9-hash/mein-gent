@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>SportWelt Support</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    h1 { color: #333; }
+    #chat { border: 1px solid #ddd; height: 400px; overflow-y: auto; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+    .user { text-align: right; margin: 8px 0; }
+    .user span { background: #007bff; color: white; padding: 8px 14px; border-radius: 18px; display: inline-block; }
+    .agent { text-align: left; margin: 8px 0; }
+    .agent span { background: #f1f1f1; padding: 8px 14px; border-radius: 18px; display: inline-block; }
+    #input-row { display: flex; gap: 8px; }
+    input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>🛒 SportWelt Support</h1>
+  <div id="chat">
+    <div class="agent"><span>Hallo! Wie kann ich dir helfen? 👟</span></div>
+  </div>
+  <div id="input-row">
+    <input id="input" type="text" placeholder="Schreib eine Nachricht..." onkeydown="if(event.key==='Enter')send()" />
+    <button onclick="send()">Senden</button>
+  </div>
+  <script>
+    // Eindeutige Session-ID für jeden Besucher
+    const sessionId = Math.random().toString(36).substring(2);
+
+    async function send() {
+      const input = document.getElementById('input');
+      const chat = document.getElementById('chat');
+      const message = input.value.trim();
+      if (!message) return;
+      input.value = '';
+      chat.innerHTML += `<div class="user"><span>${message}</span></div>`;
+      chat.innerHTML += `<div class="agent" id="loading"><span>...</span></div>`;
+      chat.scrollTop = chat.scrollHeight;
+
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, sessionId })
+      });
+      const data = await res.json();
+      document.getElementById('loading').remove();
+      chat.innerHTML += `<div class="agent"><span>${data.reply}</span></div>`;
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
