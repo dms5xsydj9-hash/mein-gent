@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const Groq = require('groq-sdk');
+const config = require('./config');
 
 const app = express();
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -8,18 +9,15 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 app.use(express.json());
 app.use(express.static('public'));
 
-// Gedächtnis — speichert den Gesprächsverlauf
 const conversations = {};
 
 app.post('/chat', async (req, res) => {
   const { message, sessionId } = req.body;
 
-  // Neues Gespräch starten falls noch keins existiert
   if (!conversations[sessionId]) {
     conversations[sessionId] = [];
   }
 
-  // Neue Nachricht zum Verlauf hinzufügen
   conversations[sessionId].push({
     role: 'user',
     content: message
@@ -30,11 +28,12 @@ app.post('/chat', async (req, res) => {
     messages: [
       {
         role: 'system',
-        content: `Du bist ein freundlicher Support-Agent für SportWelt GmbH.
-Produkte: Laufschuhe, Sportkleidung
-Versand: 2–4 Werktage, kostenlos ab 50€
-Rückgabe: 30 Tage kostenlos
-Antworte kurz und freundlich auf Deutsch.`
+        content: `Du bist ein freundlicher Support-Agent für ${config.name}.
+Produkte: ${config.produkte}
+Versand: ${config.versand}
+Rückgabe: ${config.rueckgabe}
+Support Email: ${config.email}
+Antworte immer auf ${config.sprache}.`
       },
       ...conversations[sessionId]
     ]
@@ -42,7 +41,6 @@ Antworte kurz und freundlich auf Deutsch.`
 
   const reply = response.choices[0].message.content;
 
-  // Antwort auch zum Verlauf hinzufügen
   conversations[sessionId].push({
     role: 'assistant',
     content: reply
@@ -50,7 +48,9 @@ Antworte kurz und freundlich auf Deutsch.`
 
   res.json({ reply });
 });
-
+app.get('/config', (req, res) => {
+  res.json({ name: config.name });
+});
 app.listen(3000, () => {
-  console.log('Agent läuft auf http://localhost:3000');
+  console.log(`Agent für ${config.name} läuft auf http://localhost:3000`);
 });

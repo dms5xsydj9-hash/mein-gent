@@ -17,7 +17,7 @@
   </style>
 </head>
 <body>
-  <h1>🛒 SportWelt Support</h1>
+  <h1 id="shop-title">Support Chat</h1>
   <div id="chat">
     <div class="agent"><span>Hallo! Wie kann ich dir helfen? 👟</span></div>
   </div>
@@ -27,7 +27,9 @@
   </div>
   <script>
     // Eindeutige Session-ID für jeden Besucher
-    const sessionId = Math.random().toString(36).substring(2);
+    const sessionId = fetch('/config').then(r => r.json()).then(c => {
+  document.getElementById('shop-title').textContent = c.name + ' Support';
+});
 
     async function send() {
       const input = document.getElementById('input');
