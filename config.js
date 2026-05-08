@@ -1,10 +1,12 @@
 const shopConfig = {
-  name: "Pizza Roma",
-  produkte: "Pizza, Pasta, Salate, Getränke",
-  versand: "Lieferung in 30-45 Minuten",
-  rueckgabe: "Bei Problemen sofort anrufen",
+  name: "La Pizza Mannheim",
+  produkte: "Pizza, Pasta, Salate, Getränke. Frische Zutaten, kreative Rezepte",
+  versand: "40-60 Minuten, kostenlose Lieferung (0€)",
+  rueckgabe: "Bei Problemen sofort anrufen: 0621 76447212",
   sprache: "Deutsch",
-  email: "info@pizzaroma.de"
+  email: "info@lapizza-ma.de",
+  telefon: "0621 76447212",
+  farbe: "#e8001c"
 };
 
 module.exports = shopConfig;
