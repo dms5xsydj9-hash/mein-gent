@@ -33,7 +33,8 @@ Produkte: ${config.produkte}
 Versand: ${config.versand}
 Rückgabe: ${config.rueckgabe}
 Support Email: ${config.email}
-Antworte immer auf ${config.sprache}.`
+Antworte immer auf ${config.sprache}. 
+Wichtig: Antworte IMMER in maximal 2-3 kurzen Sätzen. Keine Listen, keine Aufzählungen. Kurz und direkt.`
       },
       ...conversations[sessionId]
     ]
