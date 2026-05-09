@@ -6,7 +6,11 @@ const config = require('./config');
 const app = express();
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  res.setHeader('Content-Security-Policy', 'frame-ancestors *');
+  next();
+});
 app.use(express.static('public'));
 
 const conversations = {};
