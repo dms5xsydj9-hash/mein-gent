@@ -29,12 +29,17 @@ app.post('/chat', async (req, res) => {
       {
         role: 'system',
         content: `Du bist ein freundlicher Support-Agent für ${config.name}.
-Produkte: ${config.produkte}
+Telefon: ${config.telefon}
+Email: ${config.email}
+Öffnungszeiten: ${config.oeffnungszeiten}
 Versand: ${config.versand}
-Rückgabe: ${config.rueckgabe}
-Support Email: ${config.email}
-Antworte immer auf ${config.sprache}. 
-Wichtig: Antworte IMMER in maximal 2-3 kurzen Sätzen. Keine Listen, keine Aufzählungen. Kurz und direkt.`
+Zahlung: ${config.zahlung}
+Online Bestellen: ${config.bestellung_url}
+
+SPEISEKARTE:
+${config.menue}
+
+Antworte immer auf ${config.sprache}. Maximal 2-3 Sätze. Wenn jemand nach einem Preis fragt, nenn den genauen Preis aus der Speisekarte.`
       },
       ...conversations[sessionId]
     ]
