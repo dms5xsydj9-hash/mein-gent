@@ -1,3 +1,4 @@
+require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const Groq = require('groq-sdk');
@@ -5,7 +6,9 @@ const config = require('./config');
 
 const app = express();
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
 app.use(cors());
+app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'ALLOWALL');
   res.setHeader('Content-Security-Policy', 'frame-ancestors *');
@@ -58,9 +61,11 @@ Antworte immer auf ${config.sprache}. Maximal 2-3 Sätze. Wenn jemand nach einem
 
   res.json({ reply });
 });
+
 app.get('/config', (req, res) => {
   res.json({ name: config.name });
 });
+
 app.listen(3000, () => {
   console.log(`Agent für ${config.name} läuft auf http://localhost:3000`);
 });
