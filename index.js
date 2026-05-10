@@ -1,11 +1,11 @@
-require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const Groq = require('groq-sdk');
 const config = require('./config');
 
 const app = express();
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
+app.use(cors());
 app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'ALLOWALL');
   res.setHeader('Content-Security-Policy', 'frame-ancestors *');
